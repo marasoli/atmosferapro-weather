@@ -36,3 +36,23 @@ function fetchWeather() {
             resWeather.innerHTML = `<h1>${error.message}</h1>`
         })
 }
+
+function uploadImage() {
+    const time = new Date();
+    const hours = time.getHours();
+    const img = document.getElementById('image');
+
+    if (hours >= 0 && hours < 12) {
+        img.src = '/assets/images/sunflower.jpg'
+        document.body.style.background = '#0079A1'
+        getWeather.style.background = '#0079A1'
+    } else if (hours >= 12 && hours <= 18) {
+        img.src = '/assets/images/beach.jpg'
+        document.body.style.background = '#933015'
+        getWeather.style.background = '#933015'
+    } else {
+        img.src = '/assets/images/moon.jpg'
+        document.body.style.background = '#3c595d'
+        getWeather.style.background = '#3c595d'
+    }
+}

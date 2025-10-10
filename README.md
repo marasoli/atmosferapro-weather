@@ -4,6 +4,7 @@ O Tempo Exato! é um **projeto de extensão** desenvolvido para aplicar **concei
 ### ☀️ Funcionalidades
 - Permite ao usuário buscar informações climáticas de diferentes localidades
 - Exibe dados simples de temperatura e condições do tempo
+- Adapta o design conforme o período do dia
 - Design responsivo
 
 ### 🖥️ Tecnologias utilizada
@@ -12,11 +13,8 @@ O Tempo Exato! é um **projeto de extensão** desenvolvido para aplicar **concei
 
 ## Screenshots
 <div>
-  <h3>Home - Laptop L x Mobile M</h3>
-  <img width="450" height="1602" src="/assets/screenshots/laptop-home.png" />
-  <img width="250" src="/assets/screenshots/mobile-home.png" />
-  
-  <h3>Result - Laptop L x Mobile M</h3>
-  <img width="450" height="1602" src="/assets/screenshots/laptop-result.png" />
-  <img width="250" src="/assets/screenshots/mobile-result.png" />
+  <h3>Manhã - Tarde - Noite</h3>
+  <img width="250" src="/assets/screenshots/morning.png" />
+  <img width="250" src="/assets/screenshots/afternoon.png" />
+  <img width="250" src="/assets/screenshots/night.png" />
 </div>
