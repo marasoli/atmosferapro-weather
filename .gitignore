@@ -1,3 +1,4 @@
 .vscode
 .env
-VERSION.md
+node_modules
+documentation

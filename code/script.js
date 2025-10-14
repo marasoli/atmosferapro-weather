@@ -1,58 +1,162 @@
-const iptSearch = document.getElementById('search')
-const getWeather = document.getElementById('getWeather')
-const resWeather = document.getElementById('weatherResult')
+// GLOBAL DOM ELEMENTS
+const btnSuggestions = document.querySelectorAll('.suggestions button')
 
-getWeather.addEventListener('click', fetchWeather)
-iptSearch.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        fetchWeather()
+const spanTemp = document.querySelector('#temperature span')
+const humidity = document.querySelector('#humidity span')
+const iconWeather = document.querySelector('#weather img')
+const spanWeather = document.querySelector('#weather span')
+const wind = document.querySelector('#wind span')
+
+const flagCountry = document.querySelector('#country')
+const cityName = document.querySelector('#city span')
+
+const loader = document.querySelector('#loader')
+const msgError = document.querySelector('#error-msg')
+
+// INTERFACE ERROR MESSAGES AND HIDDEN INFORMATIONS
+const details = document.querySelector('.details')
+const logo = document.querySelector('.logo')
+const temperature = document.querySelector('#temperature')
+
+const showLoader = () => {
+    flagCountry.classList.add('hidden')
+    cityName.classList.add('hidden')
+    loader.classList.remove('hidden')
+}
+const hideLoader = () => loader.classList.add('hidden')
+
+const showErrorMessage = () => {
+    hideLoader()
+    msgError.classList.remove('hidden')
+
+    spanTemp.innerText = '--'
+    humidity.innerText = '--'
+    spanWeather.innerText = 'Error'
+    wind.innerText = '--'
+    iconWeather.removeAttribute('src')
+    flagCountry.removeAttribute('src')
+}
+
+const hideInformations = () => {
+    btnSuggestions.forEach(btn => btn.classList.add('hidden'))
+    details.classList.remove('hidden')
+    logo.classList.add('hidden')
+    temperature.classList.remove('hidden')
+    flagCountry.classList.remove('hidden')
+}
+
+// SEARCH BAR AND EVENT LISTENER
+const btnSearch = document.querySelector('#search-btn')
+const iptSearch = document.querySelector('#search-ipt');
+
+["mouseenter", "mouseleave"].forEach(e =>
+    btnSearch.addEventListener(e, toggleSearchInput)
+)
+
+function toggleSearchInput(e) {
+    if (e.type === "mouseenter") {
+        iptSearch.classList.remove('hidden')
+    } else if (e.type === "mouseleave") {
+        setTimeout(() => {
+            if (document.activeElement !== iptSearch) {
+                iptSearch.classList.add('hidden')
+            }
+        }, 1000)
+    }
+}
+
+iptSearch.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+        const search = iptSearch.value.trim()
+        if (!search) return
+        showWeather(search)
     }
 })
 
-function fetchWeather() {
-    const city = iptSearch.value
-    const apiKey = "sua_chave_api"
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=pt&units=metric`
+btnSuggestions.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        const city = btn.getAttribute('data-city')
+        showWeather(city)
+    })
+})
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Cidade não encontrada')
-            }
-            return response.json()
-        })
-        .then(data => {
-            const weatherDescription = data.weather[0].description
-            const temperature = data.main.temp
-            const icon = data.weather[0].icon
-            resWeather.innerHTML = `
-                <h1>Previsão para ${data.name} Hoje!</h1>
-                <p><strong>Temperatura:</strong> ${temperature}°C</p>
-                <p><strong>Condições:</strong> ${weatherDescription}</p>
-                <img id='icon' src="http://openweathermap.org/img/wn/${icon}.png" alt="Icone do tempo">
-            `
-        })
-        .catch(error => {
-            resWeather.innerHTML = `<h1>${error.message}</h1>`
-        })
-}
+// API WEATHER AND UI INTERFACE
+async function getWeather(city) {
+    try {
+        showLoader()
 
-function uploadImage() {
-    const time = new Date();
-    const hours = time.getHours();
-    const img = document.getElementById('image');
+        const res = await fetch(`http://localhost:3000/weather?city=${encodeURIComponent(city)}`)
+        if (!res.ok) throw new Error(`Erro na requisição: ${res.status}`)
 
-    if (hours >= 0 && hours < 12) {
-        img.src = '/assets/images/sunflower.jpg'
-        document.body.style.background = '#0079A1'
-        getWeather.style.background = '#0079A1'
-    } else if (hours >= 12 && hours <= 18) {
-        img.src = '/assets/images/beach.jpg'
-        document.body.style.background = '#933015'
-        getWeather.style.background = '#933015'
-    } else {
-        img.src = '/assets/images/moon.jpg'
-        document.body.style.background = '#3c595d'
-        getWeather.style.background = '#3c595d'
+        const data = await res.json()
+        return data
+    } catch (error) {
+        console.error(error)
+        showErrorMessage()
+    } finally {
+        hideLoader()
     }
 }
+
+async function showWeather(city) {
+    hideInformations()
+
+    const data = await getWeather(city)
+    console.log("Dados da API:", data)
+
+    if (!data || data.cod === "404") {
+        showErrorMessage()
+        return
+    }
+
+    spanTemp.innerText = parseInt(data.main.temp)
+    humidity.innerText = `${data.main.humidity}%`
+    iconWeather.setAttribute('src', `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`)
+    spanWeather.innerText = data.weather[0].description.charAt(0).toUpperCase() + data.weather[0].description.slice(1)
+    wind.innerText = `${data.wind.speed} km/h`
+    flagCountry.setAttribute('src', `https://flagsapi.com/xx/flat/64.png`.replace('xx', data.sys.country))
+    cityName.innerText = data.name
+
+    msgError.classList.add('hidden')
+    flagCountry.classList.remove('hidden')
+    cityName.classList.remove('hidden')
+}
+
+// CLOCK AND DATE DISPLAY
+const clock = document.getElementById('clock')
+const currentDate = document.getElementById('date')
+const spanDays = document.querySelectorAll('.days span')
+const days = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab']
+
+function updateClock() {
+    const now = new Date()
+    const hours = String(now.getHours()).padStart(2, '0')
+    const minutes = String(now.getMinutes()).padStart(2, '0')
+    const seconds = String(now.getSeconds()).padStart(2, '0')
+
+    clock.textContent = `${hours}:${minutes}:${seconds}`
+}
+
+function updateDate() {
+    const now = new Date()
+    const options = { day: 'numeric', month: 'long', year: 'numeric' }
+    currentDate.textContent = now.toLocaleDateString('pt-br', options)
+}
+
+function boldDays() {
+    const now = new Date()
+    const dayWeek = days[now.getDay()]
+    spanDays.forEach(span => {
+        span.classList.toggle('active', span.textContent.toLowerCase() === dayWeek)
+    })
+}
+
+updateClock()
+updateDate()
+boldDays()
+
+setInterval(updateClock, 1000)
+setInterval(() => {
+    updateDate()
+    boldDays()
+}, 60000)

@@ -3,28 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tempo Exato!</title>
+    <title>Atmosfera Pro</title>
+
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body onload="uploadImage()">
-    <header>
-        <div class="logo">
-            <img src="/assets/images/logo.png" alt="Logo Tempo Exato">
+<body>
+    <div class="container">
+        <div class="main">
+            <div class="header">
+                <div class="time">
+                    <span id="clock"></span>
+                    <span id="date"></span>
+                </div>
+                <div class="logo">
+                    <img src="/assets/images/cloud.png" alt="Logo">
+                </div>
+                <div id="temperature" class="hidden">
+                    <h2><span></span>&deg;C</h2>
+                </div>
+                <div class="search">
+                    <input id="search-ipt" class="hidden" type="text" placeholder="Busque uma cidade..." />
+                    <button id="search-btn" class="fa-solid fa-magnifying-glass"></button>
+                </div>
+            </div>
+
+            <div class="center">
+                <div class="suggestions">
+                    <button data-city="atenas">Atenas</button>
+                    <button data-city="brasilia">Brasília</button>
+                    <button data-city="camberra">Camberra</button>
+                    <button data-city="dublin">Dublin</button>
+                    <button data-city="estocolmo">Estocolmo</button>
+                    <button data-city="hongkong">Hong Kong</button>
+                    <button data-city="jacarta">Jacarta</button>
+                    <button data-city="kingston">Kingston</button>
+                    <button data-city="londres">Londres</button>
+                    <button data-city="moscou">Moscou</button>
+                    <button data-city="nairobi">Nairóbi</button>
+                    <button data-city="oslo">Oslo</button>
+                </div>
+
+                <div class="details hidden">
+                    <div id="humidity">
+                        <span></span>
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div id="weather">
+                        <img src="" alt="Icone">
+                        <span></span>
+                    </div>
+                    <div id="wind">
+                        <span></span>
+                        <i class="fa-solid fa-wind"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="searchBar">
-            <input type="text" id="search" placeholder="Digite o nome da cidade...">
-            <button id="getWeather">Buscar</button>
+
+        <div class="footer">
+            <div class="panel">
+                <div id="city">
+                    <img id="country" class="hidden" src="" alt="País">
+                    <span class="">&#x1F305 Boas Vindas</span>
+                </div>
+                <div id="loader" class="hidden">
+                    <i class="fa-solid fa-sun"></i>
+                </div>
+                <div id="error-msg" class="hidden">
+                    <span>Cidade não encontrada</span>
+                </div>
+            </div>
+
+            <div class="days">
+                <span>dom</span>
+                <span>seg</span>
+                <span>ter</span>
+                <span>qua</span>
+                <span>qui</span>
+                <span>sex</span>
+                <span>sab</span>
+            </div>
         </div>
-    </header>
-    <section id="weatherResult">
-        <div>
-            <h2>Encontre sua cidade para ver a previsão de hoje!</h2>
-        </div>
-        <div>
-            <img id="image" src="/assets/images/sunflower.jpg" alt="Girassol">
-        </div>
-    </section>
+    </div>
 </body>
 </html>
