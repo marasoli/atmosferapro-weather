@@ -26,14 +26,16 @@ npm install
 ```
 4. Inicie o servidor
 ``` 
-cd server
-node server.js
+npm run server
 ```
 
 ## Screenshots
 <div>
   <h3>Home - Result - Error Handling</h3>
-  <img width="300" src="/assets/screenshots/home.png" />
-  <img width="300" src="/assets/screenshots/result.png" />
-  <img width="300" src="/assets/screenshots/error.png" />
+  <img width="400" src="./assets/screenshots/home.png" />
+  <img width="400" src="./assets/screenshots/result.png" />
+  <img width="400" src="./assets/screenshots/error.png" />
 </div>
+
+### 🎨 Créditos
+Baseado no layout criado por [Dan Tsonkov](https://www.dantsonkov.com/), disponível em [Dibbble](https://dribbble.com/shots/2232422-004-Weather-Widget).

@@ -1,17 +1,17 @@
 {
   "name": "atmosferapro-weather",
   "version": "2.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "cd server && node server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marasoli/atmosferapro-weather.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [ "clima", "condições climáticas", "temperatura", "fullstack", "html", "css", "node.js", "api", "openweathermap" ],
+  "author": "Mariana Rafaela",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/marasoli/atmosferapro-weather/issues"
   },
@@ -22,6 +22,5 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "node": "^24.10.0"
-  },
-  "type": "module"
+  }
 }
