@@ -9,10 +9,11 @@ const app = express()
 app.use(cors())
 
 const PORT = process.env.PORT || 3000
-const API_KEY = process.env.API_WEATHER
+const API_WEATHER = process.env.API_WEATHER
+const API_UNSPLASH = process.env.API_UNSPLASH
 
-if (!API_KEY) {
-    console.error('ERROR: Variável API_WEATHER não encontrada no arquivo .env')
+if (!API_WEATHER || !API_UNSPLASH) {
+    console.error('[ERROR] Variável não encontrada no arquivo .env')
     process.exit(1)
 }
 
@@ -24,11 +25,20 @@ app.get('/weather', async (req, res) => {
     }
 
     try {
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}&lang=pt_br`
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_WEATHER}&lang=pt_br`
+        const unsplashUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(city)}&client_id=${API_UNSPLASH}&orientation=landscape`
+
         console.log("[INFO] Buscando clima:", city)
 
-        const response = await axios.get(weatherUrl)
-        res.json(response.data)
+        const [weatherRes, unsplashRes] = await Promise.all([
+            axios.get(weatherUrl),
+            axios.get(unsplashUrl)
+        ])
+
+        res.json({
+            weather: weatherRes.data,
+            image: unsplashRes.data.urls.regular
+        })
 
     } catch (error) {
         console.error("[ERROR] Requisição falhou:", error)

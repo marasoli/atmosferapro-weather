@@ -104,18 +104,23 @@ async function showWeather(city) {
     const data = await getWeather(city)
     console.log("Dados da API:", data)
 
-    if (!data || data.cod === "404") {
+    if (!data || !data.weather || data.weather.cod === "404") {
         showErrorMessage()
         return
     }
 
-    spanTemp.innerText = parseInt(data.main.temp)
-    humidity.innerText = `${data.main.humidity}%`
-    iconWeather.setAttribute('src', `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`)
-    spanWeather.innerText = data.weather[0].description.charAt(0).toUpperCase() + data.weather[0].description.slice(1)
-    wind.innerText = `${data.wind.speed} km/h`
-    flagCountry.setAttribute('src', `https://flagsapi.com/xx/flat/64.png`.replace('xx', data.sys.country))
-    cityName.innerText = data.name
+    const dw = data.weather
+    
+    spanTemp.innerText = parseInt(dw.main.temp)
+    humidity.innerText = `${dw.main.humidity}%`
+    iconWeather.setAttribute('src', `http://openweathermap.org/img/wn/${dw.weather[0].icon}.png`)
+    spanWeather.innerText = dw.weather[0].description.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    wind.innerText = `${dw.wind.speed} km/h`
+
+    flagCountry.setAttribute('src', `https://flagsapi.com/xx/flat/64.png`.replace('xx', dw.sys.country))
+    cityName.innerText = dw.name
+
+    document.body.style.backgroundImage = `url(${data.image})`;
 
     msgError.classList.add('hidden')
     flagCountry.classList.remove('hidden')

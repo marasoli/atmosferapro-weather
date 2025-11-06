@@ -130,17 +130,22 @@ body {
 .details {
     display: flex;
     align-items: end;
+    height: 100%;
 }
 
 #humidity, #weather, #wind {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 220px;
 }
 
 #humidity, #wind {
     font-size: 25px;
+    width: 165px;
+}
+
+#weather {
+    width: 330px;
 }
 
 #weather span {
